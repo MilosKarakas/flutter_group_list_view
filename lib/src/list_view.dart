@@ -242,7 +242,7 @@ class GroupListView extends StatefulWidget {
     this.sectionSeparatorBuilder,
     this.scrollDirection = Axis.vertical,
     this.reverse = false,
-    this.reverseHeaders = false,
+    this.reverseHeaders = true,
     this.controller,
     this.primary,
     this.physics,
@@ -298,7 +298,7 @@ class _GroupListViewState extends State<GroupListView> {
     ListItem listItem;
     for (int section = 0; section < widget.sectionsCount; section++) {
 
-      if (widget.reverse == false || widget.reverseHeaders == false) {
+      if (widget.reverse == false || widget.reverseHeaders == true) {
         //Add section
         listItem = ListItem(
           indexPath: IndexPath(section: section, index: 0),
@@ -335,7 +335,7 @@ class _GroupListViewState extends State<GroupListView> {
         }
       }
 
-      if (widget.reverse == false || widget.reverseHeaders == false) {
+      if (widget.reverse == false || widget.reverseHeaders == true) {
         //Add section separator
         if (widget.sectionSeparatorBuilder != null) {
           listItem = ListItem(
