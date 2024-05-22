@@ -75,6 +75,10 @@ class GroupListView extends StatefulWidget {
   /// Defaults to false.
   final bool reverse;
 
+  ///Whether the scroll view reverts section headers when scrolling in the reading direction
+  ///Only considered if [reverse] is true;
+  final bool reverseHeaders;
+
   /// An object that can be used to control the position to which this scroll
   /// view is scrolled.
   ///
@@ -214,7 +218,7 @@ class GroupListView extends StatefulWidget {
   ///
   /// Some subtypes of [ScrollView] can infer this value automatically. For
   /// example [ListView] will use the number of widgets in the child list,
-  /// while the [new ListView.separated] constructor will use half that amount.
+  /// while the [ListView.separated] constructor will use half that amount.
   ///
   /// For [CustomScrollView] and other types which do not receive a builder
   /// or list of widgets, the child count must be explicitly provided. If the
@@ -238,6 +242,7 @@ class GroupListView extends StatefulWidget {
     this.sectionSeparatorBuilder,
     this.scrollDirection = Axis.vertical,
     this.reverse = false,
+    this.reverseHeaders = false,
     this.controller,
     this.primary,
     this.physics,
@@ -292,12 +297,24 @@ class _GroupListViewState extends State<GroupListView> {
     _indexToIndexPathList = [];
     ListItem listItem;
     for (int section = 0; section < widget.sectionsCount; section++) {
-      //Add section
-      listItem = ListItem(
-        indexPath: IndexPath(section: section, index: 0),
-        type: ListItemType.section,
-      );
-      _indexToIndexPathList.add(listItem);
+
+      if (widget.reverse == false || widget.reverseHeaders == false) {
+        //Add section
+        listItem = ListItem(
+          indexPath: IndexPath(section: section, index: 0),
+          type: ListItemType.section,
+        );
+        _indexToIndexPathList.add(listItem);
+      } else {
+        //Add section separator
+        if (widget.sectionSeparatorBuilder != null) {
+          listItem = ListItem(
+            indexPath: IndexPath(section: section, index: 0),
+            type: ListItemType.sectionSeparator,
+          );
+          _indexToIndexPathList.add(listItem);
+        }
+      }
 
       final int rows = widget.countOfItemInSection(section);
       for (int index = 0; index < rows; index++) {
@@ -318,11 +335,20 @@ class _GroupListViewState extends State<GroupListView> {
         }
       }
 
-      //Add section separator
-      if (widget.sectionSeparatorBuilder != null) {
+      if (widget.reverse == false || widget.reverseHeaders == false) {
+        //Add section separator
+        if (widget.sectionSeparatorBuilder != null) {
+          listItem = ListItem(
+            indexPath: IndexPath(section: section, index: 0),
+            type: ListItemType.sectionSeparator,
+          );
+          _indexToIndexPathList.add(listItem);
+        }
+      } else {
+        //Add section
         listItem = ListItem(
           indexPath: IndexPath(section: section, index: 0),
-          type: ListItemType.sectionSeparator,
+          type: ListItemType.section,
         );
         _indexToIndexPathList.add(listItem);
       }
