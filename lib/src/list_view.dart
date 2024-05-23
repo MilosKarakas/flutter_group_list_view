@@ -232,6 +232,12 @@ class GroupListView extends StatefulWidget {
   /// {@macro flutter.widgets.scrollable.dragStartBehavior}
   final DragStartBehavior dragStartBehavior;
 
+  /// {@template flutter.widgets.scroll_view.keyboardDismissBehavior}
+  /// [ScrollViewKeyboardDismissBehavior] the defines how this [ScrollView] will
+  /// dismiss the keyboard automatically.
+  /// {@endtemplate}
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+
   const GroupListView({
     Key? key,
     required this.itemBuilder,
@@ -255,6 +261,7 @@ class GroupListView extends StatefulWidget {
     this.cacheExtent,
     this.semanticChildCount,
     this.dragStartBehavior = DragStartBehavior.start,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
   }) : super(key: key);
 
   @override
@@ -288,6 +295,7 @@ class _GroupListViewState extends State<GroupListView> {
       cacheExtent: widget.cacheExtent,
       semanticChildCount: widget.semanticChildCount,
       dragStartBehavior: widget.dragStartBehavior,
+      keyboardDismissBehavior: widget.keyboardDismissBehavior,
       itemCount: _indexToIndexPathList.length,
       itemBuilder: _itemBuilder,
     );
